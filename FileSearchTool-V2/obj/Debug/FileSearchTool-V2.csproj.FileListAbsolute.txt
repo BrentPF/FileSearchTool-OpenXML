@@ -1,0 +1,15 @@
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\bin\Debug\FileSearchTool-V2.exe.config
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\bin\Debug\FileSearchTool-V2.exe
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\bin\Debug\FileSearchTool-V2.pdb
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool-V2.csprojAssemblyReference.cache
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool_V2.Form1.resources
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool_V2.Properties.Resources.resources
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool-V2.csproj.GenerateResource.cache
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool-V2.csproj.CoreCompileInputs.cache
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool-V2.exe
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool-V2.pdb
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\bin\Debug\System.IO.FileSystem.Primitives.dll
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\bin\Debug\System.IO.Packaging.dll
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\Brent\Documents\WORK\FileSearchTool-V2\FileSearchTool-V2\obj\Debug\FileSearchTool-V2.csproj.CopyComplete
