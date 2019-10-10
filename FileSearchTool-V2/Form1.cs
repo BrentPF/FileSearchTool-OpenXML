@@ -44,7 +44,11 @@ namespace FileSearchTool_V2
 				{
 					if (ext.IsMatch(file))
 					{
-						paths.Add(file);
+						if (ParseAllFiles(this.searchTxt.Text, file))
+						{
+							//paths.Add(file);
+							ParseAllFiles("the", file);
+						}
 					}
 				}
 			}
@@ -63,8 +67,10 @@ namespace FileSearchTool_V2
 
 		private bool ParseAllFiles(string exp, string path) {
 
-			if (path.EndsWith(".doc") || path.EndsWith(".docx")) {
-				try {
+			if (path.EndsWith(".doc") || path.EndsWith(".docx"))
+			{
+				try
+				{
 					using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, false))
 					{
 						string docText = null;
@@ -73,18 +79,31 @@ namespace FileSearchTool_V2
 							docText = sr.ReadToEnd();
 						}
 
-						if (docText.Contains(exp)) {
+						if (docText.Contains(exp))
+						{
 							System.Diagnostics.Debug.WriteLine("FILE FOUND!!!!");
 							return true;
 						}
 					}
-				} catch {
+				}
+				catch
+				{
 
 				}
 
 			}
+			else if (path.EndsWith(".xls") || path.EndsWith(".xlsx")) {
+				try
+				{
+					
+				}
+				catch
+				{
 
-			return false;
+				}
+			}
+
+				return false;
 		}
 
 		private void FolderBtn_Click(object sender, EventArgs e)
@@ -110,7 +129,7 @@ namespace FileSearchTool_V2
 			foreach (string path in filePaths) {
 				this.resultList.Items.Add(path);
 			}*/
-			this.fileParseWorker.RunWorkerAsync();
+			//this.fileParseWorker.RunWorkerAsync();
 		}
 
 		private void FileParseWorker_DoWork(object sender, DoWorkEventArgs e)
