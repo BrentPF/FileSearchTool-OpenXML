@@ -18,6 +18,9 @@ namespace FileSearchTool_V2
 	{
 		private Regex[] regExs = { new Regex(".*\\.docx?$"), new Regex(".*\\.xlsx?$"), new Regex(".*\\.pdf$") };
 		private List<string> filePaths = new List<string>();
+		private DateTime start;
+		private int fileCount;
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -36,7 +39,7 @@ namespace FileSearchTool_V2
 			this.searchTxt.Enabled = true;
 		}
 
-		private void SearchAllFiles(string folder, List<string> paths)
+		private void SearchAllFiles(string folder, List<string> paths, string exp)
 		{
 			foreach (string file in Directory.GetFiles(folder))
 			{
@@ -47,7 +50,14 @@ namespace FileSearchTool_V2
 						if (ParseAllFiles(this.searchTxt.Text, file))
 						{
 							//paths.Add(file);
-							ParseAllFiles("the", file);
+							if (ParseAllFiles(exp, file))
+							{
+								this.fileFetchWorker.ReportProgress(1, file);
+							}
+							else
+							{
+								this.fileFetchWorker.ReportProgress(0, file);
+							}
 						}
 					}
 				}
@@ -56,7 +66,7 @@ namespace FileSearchTool_V2
 			{
 				try
 				{
-					SearchAllFiles(subDir, paths);
+					SearchAllFiles(subDir, paths, exp);
 				}
 				catch
 				{
@@ -116,43 +126,45 @@ namespace FileSearchTool_V2
 
 		private void SearchBtn_Click(object sender, EventArgs e)
 		{
+			start = DateTime.Now;
+			runTimer.Start();
+			fileCount = 0;
 			this.fileFetchWorker.RunWorkerAsync();
 		}
 
 		private void FileFetchWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			SearchAllFiles(this.folderTxt.Text, filePaths);
+			SearchAllFiles(this.folderTxt.Text, filePaths, this.searchTxt.Text);
 		}
 
 		private void FileFetchWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{/*
-			foreach (string path in filePaths) {
-				this.resultList.Items.Add(path);
-			}*/
-			//this.fileParseWorker.RunWorkerAsync();
+		{
+			this.progressLbl.Text = "File search has completed successfully.";
+			this.runTimer.Stop();
 		}
 
-		private void FileParseWorker_DoWork(object sender, DoWorkEventArgs e)
+		private void FileFetchWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
-			foreach (string path in filePaths)
+			this.progressLbl.Text = ("Processed: " + e.UserState as string);
+			if (e.ProgressPercentage == 1)
 			{
-				if (ParseAllFiles(this.searchTxt.Text, path))
-				{
-					this.fileParseWorker.ReportProgress(1, path);
-				}
-				else
-				{
-					this.fileParseWorker.ReportProgress(0, path);
-				}
-			}
-		}
-
-		private void FileParseWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-		{
-			this.progressLbl.Text = ("processed: " + e.UserState as string);
-			if (e.ProgressPercentage == 1) {
 				this.resultList.Items.Add(e.UserState as string);
 			}
+			fileCount++;
+			this.countLbl.Text = "Files Processed: " + fileCount;
+		}
+
+		private void RunTimer_Tick(object sender, EventArgs e)
+		{
+			TimeSpan duration = DateTime.Now - start;
+			string time = duration.ToString();
+			int msIndex = time.IndexOf('.');
+			if (msIndex > 0) {
+				time = time.Substring(0, msIndex);
+			}
+			this.timerLbl.Text = "Time (Elapsed): " + time.ToString();
+
+			
 		}
 	}
 }

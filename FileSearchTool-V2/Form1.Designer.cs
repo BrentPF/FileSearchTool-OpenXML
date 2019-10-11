@@ -28,9 +28,9 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.resultList = new System.Windows.Forms.ListBox();
 			this.consoleList = new System.Windows.Forms.ListBox();
-			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.searchBtn = new System.Windows.Forms.Button();
 			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.folderBtn = new System.Windows.Forms.Button();
@@ -40,7 +40,9 @@
 			this.outputLbl = new System.Windows.Forms.Label();
 			this.consoleLbl = new System.Windows.Forms.Label();
 			this.fileFetchWorker = new System.ComponentModel.BackgroundWorker();
-			this.fileParseWorker = new System.ComponentModel.BackgroundWorker();
+			this.runTimer = new System.Windows.Forms.Timer(this.components);
+			this.timerLbl = new System.Windows.Forms.Label();
+			this.countLbl = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// resultList
@@ -48,32 +50,27 @@
 			this.resultList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.resultList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.resultList.FormattingEnabled = true;
 			this.resultList.HorizontalScrollbar = true;
+			this.resultList.ItemHeight = 20;
 			this.resultList.Location = new System.Drawing.Point(12, 155);
 			this.resultList.Name = "resultList";
-			this.resultList.Size = new System.Drawing.Size(880, 342);
+			this.resultList.Size = new System.Drawing.Size(880, 324);
 			this.resultList.TabIndex = 0;
 			// 
 			// consoleList
 			// 
 			this.consoleList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.consoleList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.consoleList.FormattingEnabled = true;
 			this.consoleList.HorizontalScrollbar = true;
+			this.consoleList.ItemHeight = 20;
 			this.consoleList.Location = new System.Drawing.Point(12, 523);
 			this.consoleList.Name = "consoleList";
-			this.consoleList.Size = new System.Drawing.Size(880, 121);
+			this.consoleList.Size = new System.Drawing.Size(880, 104);
 			this.consoleList.TabIndex = 1;
-			// 
-			// progressBar
-			// 
-			this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar.Location = new System.Drawing.Point(12, 100);
-			this.progressBar.Name = "progressBar";
-			this.progressBar.Size = new System.Drawing.Size(880, 23);
-			this.progressBar.TabIndex = 2;
 			// 
 			// searchBtn
 			// 
@@ -117,9 +114,10 @@
 			// progressLbl
 			// 
 			this.progressLbl.AutoSize = true;
-			this.progressLbl.Location = new System.Drawing.Point(12, 84);
+			this.progressLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.progressLbl.Location = new System.Drawing.Point(11, 77);
 			this.progressLbl.Name = "progressLbl";
-			this.progressLbl.Size = new System.Drawing.Size(306, 13);
+			this.progressLbl.Size = new System.Drawing.Size(457, 20);
 			this.progressLbl.TabIndex = 7;
 			this.progressLbl.Text = "Please enter a search term and select a parent folder to search.";
 			// 
@@ -134,7 +132,6 @@
 			// 
 			// consoleLbl
 			// 
-			this.consoleLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.consoleLbl.AutoSize = true;
 			this.consoleLbl.Location = new System.Drawing.Point(12, 507);
 			this.consoleLbl.Name = "consoleLbl";
@@ -144,20 +141,43 @@
 			// 
 			// fileFetchWorker
 			// 
+			this.fileFetchWorker.WorkerReportsProgress = true;
 			this.fileFetchWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.FileFetchWorker_DoWork);
+			this.fileFetchWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.FileFetchWorker_ProgressChanged);
 			this.fileFetchWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.FileFetchWorker_RunWorkerCompleted);
 			// 
-			// fileParseWorker
+			// runTimer
 			// 
-			this.fileParseWorker.WorkerReportsProgress = true;
-			this.fileParseWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.FileParseWorker_DoWork);
-			this.fileParseWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.FileParseWorker_ProgressChanged);
+			this.runTimer.Interval = 1000;
+			this.runTimer.Tick += new System.EventHandler(this.RunTimer_Tick);
+			// 
+			// timerLbl
+			// 
+			this.timerLbl.AutoSize = true;
+			this.timerLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.timerLbl.Location = new System.Drawing.Point(11, 97);
+			this.timerLbl.Name = "timerLbl";
+			this.timerLbl.Size = new System.Drawing.Size(185, 20);
+			this.timerLbl.TabIndex = 10;
+			this.timerLbl.Text = "Time (Elapsed): 00:00:00";
+			// 
+			// countLbl
+			// 
+			this.countLbl.AutoSize = true;
+			this.countLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.countLbl.Location = new System.Drawing.Point(11, 117);
+			this.countLbl.Name = "countLbl";
+			this.countLbl.Size = new System.Drawing.Size(138, 20);
+			this.countLbl.TabIndex = 11;
+			this.countLbl.Text = "Files Processed: 0";
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(906, 656);
+			this.Controls.Add(this.countLbl);
+			this.Controls.Add(this.timerLbl);
 			this.Controls.Add(this.consoleLbl);
 			this.Controls.Add(this.outputLbl);
 			this.Controls.Add(this.progressLbl);
@@ -165,7 +185,6 @@
 			this.Controls.Add(this.searchTxt);
 			this.Controls.Add(this.folderBtn);
 			this.Controls.Add(this.searchBtn);
-			this.Controls.Add(this.progressBar);
 			this.Controls.Add(this.consoleList);
 			this.Controls.Add(this.resultList);
 			this.Name = "Form1";
@@ -179,7 +198,6 @@
 
 		private System.Windows.Forms.ListBox resultList;
 		private System.Windows.Forms.ListBox consoleList;
-		private System.Windows.Forms.ProgressBar progressBar;
 		private System.Windows.Forms.Button searchBtn;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 		private System.Windows.Forms.Button folderBtn;
@@ -189,7 +207,9 @@
 		private System.Windows.Forms.Label outputLbl;
 		private System.Windows.Forms.Label consoleLbl;
 		private System.ComponentModel.BackgroundWorker fileFetchWorker;
-		private System.ComponentModel.BackgroundWorker fileParseWorker;
+		private System.Windows.Forms.Timer runTimer;
+		private System.Windows.Forms.Label timerLbl;
+		private System.Windows.Forms.Label countLbl;
 	}
 }
 
